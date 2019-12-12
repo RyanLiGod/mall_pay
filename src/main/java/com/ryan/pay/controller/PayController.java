@@ -2,12 +2,10 @@ package com.ryan.pay.controller;
 
 import com.lly835.bestpay.model.PayResponse;
 import com.ryan.pay.service.impl.PayService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigDecimal;
@@ -18,6 +16,7 @@ import java.util.Map;
  * @author Ryan Li
  * @date 2019/12/12
  */
+@Slf4j
 @Controller
 @RequestMapping("/pay")
 public class PayController {
@@ -35,6 +34,10 @@ public class PayController {
     }
 
     @PostMapping("/notify")
-    public void 
+    @ResponseBody
+    public String asyncNotify(@RequestBody String notifyData) {
+        log.info("notifyData={}", notifyData);
+        return payService.asyncNotify(notifyData);
+    }
 
 }

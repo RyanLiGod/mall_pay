@@ -2,6 +2,8 @@ package com.ryan.pay.controller;
 
 import com.lly835.bestpay.enums.BestPayTypeEnum;
 import com.lly835.bestpay.model.PayResponse;
+import com.ryan.pay.config.WxpayAccountConfig;
+import com.ryan.pay.pojo.PayInfo;
 import com.ryan.pay.service.impl.PayService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class PayController {
     @Autowired
     private PayService payService;
 
+    @Autowired
+    private WxpayAccountConfig wxpayAccountConfig;
+
     @GetMapping("/create")
     public ModelAndView create(@RequestParam("orderId") String orderId,
                                @RequestParam("amount") BigDecimal amount,
@@ -34,6 +39,8 @@ public class PayController {
         // 支付方式不同，渲染就不同，WXPAY_NATIVE使用codeUrl，ALIPAY_PC使用body
         if (bestPayTypeEnum == BestPayTypeEnum.WXPAY_NATIVE) {
             map.put("codeUrl", payResponse.getCodeUrl());
+            map.put("orderId", orderId);
+            map.put("returnUrl", wxpayAccountConfig.getReturnUrl());
             return new ModelAndView("createWxpay", map);
         } else if (bestPayTypeEnum == BestPayTypeEnum.ALIPAY_PC) {
             map.put("body", payResponse.getBody());
@@ -48,6 +55,12 @@ public class PayController {
     public String asyncNotify(@RequestBody String notifyData) {
         log.info("notifyData={}", notifyData);
         return payService.asyncNotify(notifyData);
+    }
+
+    @GetMapping("/queryByOrderId")
+    @ResponseBody
+    public PayInfo queryByOrderId(@RequestParam String orderId) {
+        return payService.queryByOrderId(orderId);
     }
 
 }

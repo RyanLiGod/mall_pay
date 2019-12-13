@@ -2,6 +2,7 @@ package com.ryan.pay.service;
 
 import com.lly835.bestpay.enums.BestPayTypeEnum;
 import com.lly835.bestpay.model.PayResponse;
+import com.ryan.pay.pojo.PayInfo;
 
 import java.math.BigDecimal;
 
@@ -19,4 +20,6 @@ public interface IPayService {
      * 异步通知处理
      */
     String asyncNotify(String notifyData);
+
+    PayInfo queryByOrderId(String orderId);
 }

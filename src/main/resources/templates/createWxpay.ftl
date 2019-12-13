@@ -17,6 +17,24 @@
         render: "canvas",
         text: "${codeUrl}"
     });
+
+    $(function () {
+        // 定时器
+        setInterval(function () {
+            $.ajax({
+                url: "/pay/queryByOrderId",
+                data: {
+                    'orderId': "${orderId}"
+                },
+                success: function (result) {
+                    console.log(result);
+                    if (result.platformStatus != null && result.platformStatus === 'SUCCESS') {
+                        location.href = "${returnUrl}";
+                    }
+                }
+            })
+        }, 2000)
+    })
 </script>
 </body>
 </html>

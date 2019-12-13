@@ -23,14 +23,17 @@ public class PayService implements IPayService {
     private BestPayService bestPayService;
 
     @Override
-    public PayResponse create(String orderId, BigDecimal amount) {
+    public PayResponse create(String orderId, BigDecimal amount, BestPayTypeEnum bestPayTypeEnum) {
+
         PayRequest payRequest = new PayRequest();
         payRequest.setOrderName("1202883-hello");
         payRequest.setOrderId(orderId);
         payRequest.setOrderAmount(amount.doubleValue());
-        payRequest.setPayTypeEnum(BestPayTypeEnum.WXPAY_NATIVE);
+        payRequest.setPayTypeEnum(bestPayTypeEnum);
+        PayResponse payResponse = bestPayService.pay(payRequest);
+        log.info("response={}", payResponse);
 
-        return bestPayService.pay(payRequest);
+        return payResponse;
     }
 
     @Override

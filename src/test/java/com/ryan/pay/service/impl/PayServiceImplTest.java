@@ -13,7 +13,7 @@ import java.math.BigDecimal;
  */
 public class PayServiceImplTest extends PayApplicationTests {
 
-    @Autowired(required = false)
+    @Autowired
     private PayServiceImpl payServiceImpl;
 
     @Test
